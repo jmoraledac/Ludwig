@@ -183,8 +183,8 @@ class HuggingFaceHub(BaseModelUpload):
         )
 
         trained_model_artifacts_path = os.path.join(model_path, "model", "model_weights")
-        """
-        Make sure the model's saved artifacts either contain:
+        """Make sure the model's saved artifacts either contain:
+
         1. pytorch_model.bin -> regular model training, such as ECD or for LLMs
         2. adapter_model.bin or adapter_model.safetensors -> LLM fine-tuning using PEFT
            <Alex(12/10/2023): TODO>

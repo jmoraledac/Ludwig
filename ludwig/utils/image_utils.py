@@ -217,7 +217,7 @@ def pad(
     img: torch.Tensor,
     new_size: Union[int, Tuple[int, int]],
 ) -> torch.Tensor:
-    """torchscript-compatible implementation of pad.
+    """Torchscript-compatible implementation of pad.
 
     Args:
         img (torch.Tensor): image with shape [..., height, width] to pad
@@ -240,7 +240,7 @@ def crop(
     img: torch.Tensor,
     new_size: Union[int, Tuple[int, int]],
 ) -> torch.Tensor:
-    """torchscript-compatible implementation of crop.
+    """Torchscript-compatible implementation of crop.
 
     Args:
         img (torch.Tensor): image with shape [..., height, width] to crop
@@ -255,7 +255,7 @@ def crop(
 
 @DeveloperAPI
 def crop_or_pad(img: torch.Tensor, new_size: Union[int, Tuple[int, int]]):
-    """torchscript-compatible implementation of resize using constants.CROP_OR_PAD.
+    """Torchscript-compatible implementation of resize using constants.CROP_OR_PAD.
 
     Args:
         img (torch.Tensor): image with shape [..., height, width] to resize
@@ -280,7 +280,7 @@ def resize_image(
     crop_or_pad_constant: str = CROP_OR_PAD,
     interpolate_constant: str = INTERPOLATE,
 ) -> torch.Tensor:
-    """torchscript-compatible implementation of resize.
+    """Torchscript-compatible implementation of resize.
 
     Args:
         img (torch.Tensor): image with shape [..., height, width] to resize
@@ -331,9 +331,8 @@ def to_tuple(v: Union[int, Tuple[int, int]]) -> Tuple[int, int]:
 def to_np_tuple(prop: Union[int, Iterable]) -> np.ndarray:
     """Creates a np array of length 2 from a Conv2D property.
 
-    E.g., stride=(2, 3) gets converted into np.array([2, 3]), where the
-    height_stride = 2 and width_stride = 3. stride=2 gets converted into
-    np.array([2, 2]).
+    E.g., stride=(2, 3) gets converted into np.array([2, 3]), where the height_stride = 2 and width_stride = 3. stride=2
+    gets converted into np.array([2, 2]).
     """
     if type(prop) == int:
         return np.ones(2).astype(int) * prop
