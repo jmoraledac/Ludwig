@@ -970,7 +970,7 @@ tokenizer_registry = {
     "multi_lemmatize_filter": MultiLemmatizeFilterTokenizer,
     "multi_lemmatize_remove_stopwords": MultiLemmatizeRemoveStopwordsTokenizer,
 }
-"""torchtext 0.12.0 tokenizers.
+"""Torchtext 0.12.0 tokenizers.
 
 Only available with torchtext>=0.12.0.
 """
