@@ -125,7 +125,7 @@ def test_get_trainer_kwargs(trainer_config, cluster_resources, num_nodes, expect
             actual_backend = actual_kwargs.pop("backend")
             expected_backend = expected_kwargs.pop("backend")
 
-            assert type(actual_backend) == type(expected_backend)
+            assert isinstance(actual_backend, type(expected_backend))
             if isinstance(actual_backend, HorovodConfig):
                 assert actual_backend.nics == expected_backend.nics
             assert actual_kwargs == expected_kwargs
