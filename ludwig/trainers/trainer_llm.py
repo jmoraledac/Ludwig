@@ -1,9 +1,9 @@
 import logging
 import os
 import time
-import torch
 from typing import Callable, Dict, List, Optional, Union
 
+import torch
 from torch.utils.tensorboard import SummaryWriter
 
 from ludwig.constants import MINIMUM_BATCH_SIZE, TEST, TRAINING, VALIDATION
@@ -472,11 +472,32 @@ class FineTuneTrainer(Trainer):
 
         progress_tracker.llm_eval_examples = llm_eval_examples
         return append_metrics(self.model, dataset_name, metrics, metrics_log, progress_tracker)
-    
-    def tune_batch_size(self, config: ModelConfigDict, training_set: Dataset, random_seed: int = default_random_seed, max_trials: int = 20, halving_limit: int = 3, snapshot_weights: bool = True, on_best_batch_size_updated: Optional[Callable[[int, float, int], None]] = None, tune_for_training: bool = True, max_sequence_length: Optional[int] = None) -> int:
+
+    def tune_batch_size(
+        self,
+        config: ModelConfigDict,
+        training_set: Dataset,
+        random_seed: int = default_random_seed,
+        max_trials: int = 20,
+        halving_limit: int = 3,
+        snapshot_weights: bool = True,
+        on_best_batch_size_updated: Optional[Callable[[int, float, int], None]] = None,
+        tune_for_training: bool = True,
+        max_sequence_length: Optional[int] = None,
+    ) -> int:
         if max_sequence_length is None:
             max_sequence_length = self.model.global_max_sequence_length
-        return super().tune_batch_size(config, training_set, random_seed, max_trials, halving_limit, snapshot_weights, on_best_batch_size_updated, tune_for_training, max_sequence_length)
+        return super().tune_batch_size(
+            config,
+            training_set,
+            random_seed,
+            max_trials,
+            halving_limit,
+            snapshot_weights,
+            on_best_batch_size_updated,
+            tune_for_training,
+            max_sequence_length,
+        )
 
     def _create_batch_size_evaluator(self) -> BatchSizeEvaluator:
         trainer = self
@@ -495,17 +516,22 @@ class FineTuneTrainer(Trainer):
                 output_msl = output_feature.output_shape[0]
                 if max_sequence_length is not None and input_msl + output_msl > max_sequence_length:
                     # In this case, we just need to make sure that the length of the synthetic data exceeds max_sequence_length
-                    input_msl = max_sequence_length/2 + 1
-                    output_msl = max_sequence_length/2 + 1
+                    input_msl = max_sequence_length / 2 + 1
+                    output_msl = max_sequence_length / 2 + 1
                 inputs = {
-                    input_feature_name: torch.rand([batch_size, input_msl]).to(input_feature.input_dtype).to(trainer.device)
+                    input_feature_name: torch.rand([batch_size, input_msl])
+                    .to(input_feature.input_dtype)
+                    .to(trainer.device)
                 }
                 targets = {
-                    output_feature_name: torch.rand([batch_size, output_msl]).to(output_feature.get_output_dtype()).to(trainer.device)
+                    output_feature_name: torch.rand([batch_size, output_msl])
+                    .to(output_feature.get_output_dtype())
+                    .to(trainer.device)
                 }
                 trainer.train_step(inputs, targets)
 
         return _TrainerBatchSizeEvaluator()
+
 
 class RemoteLLMTrainer(NoneTrainer):
     def __init__(self, gpus=None, gpu_memory_limit=None, allow_parallel_threads=True, **kwargs):
